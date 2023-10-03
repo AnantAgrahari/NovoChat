@@ -1,5 +1,5 @@
 const express = require("express");
-const {accessChat,fetchChats,createGroupChat,renameGroup} =require('../controllers/chatControllers')
+const {accessChat,fetchChats,createGroupChat,renameGroup,addToGroup,removeFromGroup} =require('../controllers/chatControllers')
 const {
   accessChat,
   fetchChats,
