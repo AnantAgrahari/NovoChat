@@ -1,6 +1,8 @@
 const asyncHandler=require("express-async-handler");
-
+const Chat=require('../models/chatModel');
+const User=require('../models/userModel');
 const accessChat=asyncHandler(async(req,res)=>{
+    
    const{userId}=req.body;
    if(!userId){
     console.log("userId param not sent with request");
@@ -14,7 +16,7 @@ const accessChat=asyncHandler(async(req,res)=>{
       { users: { $elemMatch: { $eq: userId } } },           // new user //
     ],
   })
-    .populate("users", "-password")
+    .populate("users", "-password")                  //populate is used to join or combine//
     .populate("latestMessage");
 
   isChat = await User.populate(isChat, {
@@ -22,9 +24,9 @@ const accessChat=asyncHandler(async(req,res)=>{
     select: "name pic email",
   });
 
-  if (isChat.length > 0) {
+  if (isChat.length > 0) {                 //used to final check whether chat exists or not,bit of extension of upper checking//
     res.send(isChat[0]);
-  } else {
+  } else {                                  //if chat not exist then create new chat//
     var chatData = {
       chatName: "sender",
       isGroupChat: false,
@@ -32,4 +34,19 @@ const accessChat=asyncHandler(async(req,res)=>{
     };
 
 
-})
+    try {                                                                   // access chat func. is only created,for it to save we have to save it to database//
+        const createdChat = await Chat.create(chatData);
+        const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(                  //created chat is send to the user//
+          "users",
+          "-password"
+        );
+        res.status(200).json(FullChat);
+      } catch (error) {
+        res.status(400);
+        throw new Error(error.message);
+      }
+    }
+
+
+});
+module.exports={accessChat};

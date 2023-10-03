@@ -1,4 +1,5 @@
 const express = require("express");
+const {accessChat} =require('../controllers/chatControllers')
 const {
   accessChat,
   fetchChats,
