@@ -5,7 +5,7 @@ const chatModel=mongoose.Schema(
     {
         chatName:{type:String,trim:true},   //1 to 1 //
         isGroupChat:{type:Boolean,default:false},
-        users:[                                                  //1 to 1//
+        users:[                                                  //1 to 1//    // this is a array of all chats //
             {
                 type:mongoose.Schema.Types.ObjectId,
                 ref:"User",
