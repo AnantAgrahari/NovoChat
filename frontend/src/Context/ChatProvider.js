@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const ChatContext = createContext();
+const ChatContext = createContext();            //creation of the context//
 
-const ChatProvider = ({ children }) => {
-  const [selectedChat, setSelectedChat] = useState();
+const ChatProvider = ({ children }) => {                 //if all these states have been created in any component,then it would have been accessible 
+  const [selectedChat, setSelectedChat] = useState();    //only for that component,but if we are creating it in context API then it is accessible in all parts of the app// 
   const [user, setUser] = useState();
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState();
@@ -15,13 +15,13 @@ const ChatProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
 
-    if (!userInfo) history.push("/");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history]);
+    if (!userInfo) history.push("/");                             //if the user is not logged in then he will be redirected to login page//
+    
+  }, [history]);          //whenever the history changes,its gonna run again//
 
   return (
     <ChatContext.Provider
-      value={{
+      value={{                 //to allow access of above mention states in all the parts of our app,we write it in this particular format// 
         selectedChat,
         setSelectedChat,
         user,
@@ -37,7 +37,7 @@ const ChatProvider = ({ children }) => {
   );
 };
 
-export const ChatState = () => {
+export const ChatState = () => {           //all the states which are going to be used in every part of the app are under ChatState variable//
   return useContext(ChatContext);
 };
 
