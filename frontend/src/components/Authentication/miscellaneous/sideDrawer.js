@@ -76,6 +76,8 @@ const sideDrawer = () => {
       };
 
       const {data}=await axios.post('/api/chat',{userId},config);      //api request for chat to start//
+      
+      if(!chats.find((c)=>c._id===data._id)) setChats([data,...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
       onClose();
@@ -156,6 +158,7 @@ const sideDrawer = () => {
           />
         ))
       )}
+      {loadingChat && <Spinner ml="auto" d="flex"/>}
     </DrawerBody>
     </DrawerContent>
    

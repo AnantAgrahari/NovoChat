@@ -7,7 +7,7 @@ const ChatProvider = ({ children }) => {                 //if all these states h
   const [selectedChat, setSelectedChat] = useState();    //only for that component,but if we are creating it in context API then it is accessible in all parts of the app// 
   const [user, setUser] = useState();
   const [notification, setNotification] = useState([]);
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
 
   const history = useHistory();
 
