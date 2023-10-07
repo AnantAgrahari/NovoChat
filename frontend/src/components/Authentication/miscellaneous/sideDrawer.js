@@ -16,7 +16,7 @@ const sideDrawer = () => {
   const [loading,setLoading]=useState(false);
   const [loadingChat, setLoadingChat]=useState();
 
-  const { user } = ChatState();
+  const { user,setSelectedChat,chats,setChats} = ChatState();
   const history=useHistory();
   const {isOpen,onOpen,onClose}=useDisclosure();
 
@@ -28,7 +28,7 @@ const sideDrawer = () => {
 
   const toast=useToast();
 
-  const handleSearch=async()=>{                                 //this is to handle search when we search for new chat// 
+  const handleSearch=async()=>{                                 //this is to handle search when we search the user in the searchbar for new chat// 
     if(!search){                                          //after searching,if there is no result,then display the following error//
       toast({
         title:"Please enter something in search",
@@ -55,7 +55,7 @@ const sideDrawer = () => {
     } catch (error) {
       toast({
         title:"Error Occured",
-        descriptionL:"Failed to load the search results",
+        description:"Failed to load the search results",
         status:"error",
         duration:5000,
         isClosable:true,
@@ -63,7 +63,35 @@ const sideDrawer = () => {
       })
     }
   };
-   const accessChat=(userId)=>{};
+
+   const accessChat=async(userId)=>{              //this is used when we click to start any new chat in the search user sidebar//
+
+    try {
+      setLoadingChat(true);
+      const config={
+        headers:{
+          "Content-type":"application/json",
+          Authorization:`Bearer ${user.token}`,
+        },
+      };
+
+      const {data}=await axios.post('/api/chat',{userId},config);      //api request for chat to start//
+      setSelectedChat(data);
+      setLoadingChat(false);
+      onClose();
+    } 
+    catch (error) {
+      toast({
+        title:"Error Occured",
+        description:error.message,
+        status:"error",
+        duration:5000,
+        isClosable:true,
+        position:"bottom-left",
+      })
+    }
+
+   };
 
   return (
     <><Box>
@@ -120,10 +148,10 @@ const sideDrawer = () => {
         <Button onClick={handleSearch}>Go</Button>
       </Box>
       {loading ? (<ChatLoading/>):(
-        searchResult?.map(user=>(
+        searchResult?.map((user)=>(
           <UserListItem
           key={user._id}
-          user={user}
+         user={user}
           handleFunction={()=>accessChat(user._id)}    //creates a chat with user._id//
           />
         ))
