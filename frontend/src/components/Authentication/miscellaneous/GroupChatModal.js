@@ -1,4 +1,4 @@
-import { Modal,ModalBody,ModalCloseButton,ModalContent,ModalFooter,ModalHeader,ModalOverlay,Button } from '@chakra-ui/react';
+import { Modal,ModalBody,ModalCloseButton,ModalContent,ModalFooter,ModalHeader,ModalOverlay,Button,useToast,Input } from '@chakra-ui/react';
 import React from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { ChatState } from '../../../Context/ChatProvider';
@@ -14,6 +14,43 @@ const GroupChatModal = ({children}) => {
     const toast = useToast();
 
     const {user,chats,setChats}=ChatState();
+    const handleSearch=async(query)=>{
+        setSearch(query);
+        if(!query){
+            return;
+        }
+
+        try {
+            setLoading(true);
+            
+            const config={
+                headers:{
+                    Authorization:`Bearer ${user.token}`,
+                },
+            };
+            const {data}=await axios.get(`/api/user?search ${search}`,config);
+            console.log(data);
+            setLoading(false);
+            setSearchResult(data);
+
+
+        } catch (error) {
+              toast({
+        title:"Error Occured",
+        description:error.message,
+        status:"error",
+        duration:5000,
+        isClosable:true,
+        position:"bottom-left",
+      })
+        }
+
+    };
+
+
+
+
+    const handleSubmit=()=>{};
 
 
   return (
@@ -33,14 +70,29 @@ const GroupChatModal = ({children}) => {
             <ModalCloseButton/>
             <ModalBody d="flex" flexDir="column" alignItems="center">
                <FormControl>
-                <Input/>
+                <Input 
+                placeholder="Chat Name"
+                 mb={3}
+                 onChange={(e)=>setGroupChatName(e.target.value)}
+                 />
                </FormControl>
+               <FormControl>
+                <Input 
+                placeholder="Add users eg: John,Piyush,Jane"
+                 mb={1}
+                 onChange={(e)=>handleSearch(e.target.value)}
+                 />
+               </FormControl>
+                  {/* selected Users */}
+                  {/* render searched users */}
+
+
             </ModalBody>
             <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                <Button colorScheme="blue"  onClick={handleSubmit}>
                     Close
                 </Button>
-                <Button variant="ghost">Secondary Action</Button>
+                
             </ModalFooter>
         </ModalContent>
     </Modal>
