@@ -35,10 +35,10 @@ const {user,selectedChat,setSelectedChat}=ChatState();
               ):(
                 <>
                 {selectedChat.chatName.toUpperCase()}
-                {/* <UpdateGroupChatModal
+                <UpdateGroupChatModal
                 fetchAgain={fetchAgain}
                 setFetchAgain={setFetchAgain}
-                /> */}
+                />
                 </>
               )}
 
