@@ -2,11 +2,13 @@ import React from 'react';
 import { IconButton } from '@chakra-ui/button';
 import {useDisclosure} from "@chakra-ui/hooks"
 import { ViewIcon } from '@chakra-ui/icons';
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,Box, FormControl, Input,Spinner} from '@chakra-ui/react';
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,Box, FormControl, Input,Spinner,Button,ModalOverlay} from '@chakra-ui/react';
 import { ChatState } from '../../../Context/ChatProvider';
 import UserBadgeItem from "../../UserAvatar/UserBadgeItem";
 import axios from "axios";
 import UserListItem from '../../UserAvatar/UserListItem';
+import { useState } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 const UpdateGroupChatModal = ({fetchAgain,setFetchAgain}) => {
     const {isOpen,onOpen,onClose}=useDisclosure();

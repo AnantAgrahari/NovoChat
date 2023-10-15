@@ -5,7 +5,7 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import {getSender, getSenderFull} from "../config/ChatLogics";
 import {IconButton} from "@chakra-ui/button";
 import ProfileModal from "./Authentication/miscellaneous/ProfileModal";
-
+import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChatModal';
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
 const {user,selectedChat,setSelectedChat}=ChatState();
 

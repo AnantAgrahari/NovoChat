@@ -118,4 +118,4 @@ const MyChats = ({fetchAgain}) => {
   )
 }
 
-export default MyChat
+export default MyChats;
