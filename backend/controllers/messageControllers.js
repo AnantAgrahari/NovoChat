@@ -43,5 +43,17 @@ const sendMessage=asyncHandler(async(req,res)=>{
 
 });
 
-
-module.exports={sendMessage};
+const allMessages=asyncHandler(async(req,res)=>{                  //it fetches all the messages for that particular chat id//
+    try {
+        const messages=await Message.find({chat:req.params.chatId})
+        .populate("sender","name pic email")
+        .populate("chat");
+        res.json(messages);       //sending the response//
+    } 
+    
+    catch (error) {
+        res.status(400);
+        throw new Error(error.message);
+    }
+})
+module.exports={sendMessage,allMessages};

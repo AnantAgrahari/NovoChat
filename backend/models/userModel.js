@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const bcrypt=require("bcryptjs");
-const userSchema=mongoose.Schema({
+const userSchema=mongoose.Schema({                              //this is the user that is currently logged in//
    name:{type:String,required:true},
    email:{type:String,required:true,unique:true},
    password:{type:String,required:true},
