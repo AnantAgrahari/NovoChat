@@ -6,7 +6,8 @@ import {getSender, getSenderFull} from "../config/ChatLogics";
 import {IconButton} from "@chakra-ui/button";
 import ProfileModal from "./Authentication/miscellaneous/ProfileModal";
 import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChatModal';
-import {Spinner} from "@chakra-ui/react"
+import {FormControl, Spinner} from "@chakra-ui/react"
+import { sendMessage } from '../../../backend/controllers/messageControllers';
 
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
@@ -15,6 +16,25 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
 const {user,selectedChat,setSelectedChat}=ChatState();
+
+const sendMessage=(event)=>{
+    if(event.key==="Enter" && newMessage)
+    {
+      try {
+        
+      } catch () {
+        
+      }
+    }
+};
+
+
+const typingHandler=(e)=>{
+  setNewMessage(e.target.value);
+
+
+  //typing indicator logic//
+};
 
   return (
     <>
@@ -62,8 +82,27 @@ const {user,selectedChat,setSelectedChat}=ChatState();
             overflowY="hidden"
         >
 
-          {!loading ? <Spinner /> :<></>}
+          {!loading ? (
+          <Spinner
+           size="xl"
+           w={20}
+           h={20}
+           alignself="center"
+           margin="auto"
+           /> 
+           ):(
+           <div>Messages</div>
+           )}
 
+           <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+            <Input 
+            variant="filled"
+            bg="E0E0E0"
+            placeholder="enter the message..."
+            onChange={typingHandler}
+            value={newMessage}
+            />
+           </FormControl>
         </Box>
         </>
     ):(
