@@ -9,6 +9,7 @@ import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChat
 import {FormControl, Spinner} from "@chakra-ui/react"
 import { sendMessage } from '../../../backend/controllers/messageControllers';
 import axios from "axios";
+import "./styles.css";
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
@@ -17,6 +18,42 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [newMessage, setNewMessage] = useState();
 const {user,selectedChat,setSelectedChat}=ChatState();
      const toast=useToast();
+
+       const fetchMessages=async()=>{                          //used to fetch all the older messages of that particular chat from database//
+          if(!selectedChat) return;
+
+          try {
+            const config={
+              headers:{
+                Authorization:`Bearer ${user.token}`,
+              },
+            };
+
+            setLoading(true);
+            const {data}=await axios.get(
+             `/api/message/${selectedChat._id}`,
+             config
+            );
+
+            setMessages(data);
+            setLoading(false);              
+
+
+          } catch (error) {
+            toast({
+              title:"error occured",
+              description:"failed to send the message",
+              status:"error",
+              duration:5000,
+              isClosable:true,
+              position:"bottom",
+            });
+          }
+       };
+
+       useEffect(()=>{
+        fetchMessages();
+       },[selectedChat]);                     //whenever the user changes the chat,fetchMessages() renders again //
 
 const sendMessage=async(event)=>{
     if(event.key==="Enter" && newMessage)                  //if the pressed key is enter and new message is present thenn only this block will execute//  
@@ -28,7 +65,9 @@ const sendMessage=async(event)=>{
             Authorization:`Bearer ${user.token}`,
           },
         };
-        const {data}=await axios.post(
+
+        setNewMessage("");                              //this will set the new message to be empty//
+        const {data}=await axios.post(              //api call //
           "/api/message",
           {
             content:newMessage,
@@ -36,7 +75,7 @@ const sendMessage=async(event)=>{
           },
           config
         );
-        setNewMessage("");
+       
         setMessages([...messages,data]);             //this is used to append or add the new message over the existing messages//
          
       } catch (error) {
@@ -89,6 +128,7 @@ const typingHandler=(e)=>{
                 <UpdateGroupChatModal
                 fetchAgain={fetchAgain}
                 setFetchAgain={setFetchAgain}
+                fetchMessages={fetchMessages}
                 />
                 </>
               )}
@@ -115,7 +155,7 @@ const typingHandler=(e)=>{
            margin="auto"
            /> 
            ):(
-           <div>Messages</div>
+           <div className='messages'>Messages</div>
            )}
 
            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
