@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChatState } from '../Context/ChatProvider';
 import {Box,Text} from "@chakra-ui/layout";
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -6,7 +6,14 @@ import {getSender, getSenderFull} from "../config/ChatLogics";
 import {IconButton} from "@chakra-ui/button";
 import ProfileModal from "./Authentication/miscellaneous/ProfileModal";
 import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChatModal';
+import {Spinner} from "@chakra-ui/react"
+
+
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
+
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState();
 const {user,selectedChat,setSelectedChat}=ChatState();
 
   return (
@@ -54,6 +61,8 @@ const {user,selectedChat,setSelectedChat}=ChatState();
             borderRadius="lg"
             overflowY="hidden"
         >
+
+          {!loading ? <Spinner /> :<></>}
 
         </Box>
         </>

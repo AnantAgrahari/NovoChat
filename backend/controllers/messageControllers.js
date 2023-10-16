@@ -28,7 +28,7 @@ const sendMessage=asyncHandler(async(req,res)=>{
         select:"name pic email",
     });
     await Chat.findByIdAndUpdate(req.body.chatId,{
-        latestMessage:message,
+        latestMessage:message,                           //this is used to update the message in the database with the newly created message//
     });
     res.json(message);
 
