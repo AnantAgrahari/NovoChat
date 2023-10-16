@@ -8,7 +8,7 @@ import ProfileModal from "./Authentication/miscellaneous/ProfileModal";
 import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChatModal';
 import {FormControl, Spinner} from "@chakra-ui/react"
 import { sendMessage } from '../../../backend/controllers/messageControllers';
-
+import axios from "axios";
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
@@ -16,14 +16,38 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
 const {user,selectedChat,setSelectedChat}=ChatState();
+     const toast=useToast();
 
-const sendMessage=(event)=>{
-    if(event.key==="Enter" && newMessage)
+const sendMessage=async(event)=>{
+    if(event.key==="Enter" && newMessage)                  //if the pressed key is enter and new message is present thenn only this block will execute//  
     {
       try {
-        
-      } catch () {
-        
+        const config={
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:`Bearer ${user.token}`,
+          },
+        };
+        const {data}=await axios.post(
+          "/api/message",
+          {
+            content:newMessage,
+            chatId:selectedChat._id,
+          },
+          config
+        );
+        setNewMessage("");
+        setMessages([...messages,data]);             //this is used to append or add the new message over the existing messages//
+         
+      } catch (error) {
+        toast({
+          title:"error occured",
+          description:"failed to send the message",
+          status:"error",
+          duration:5000,
+          isClosable:true,
+          position:"bottom",
+        });
       }
     }
 };
