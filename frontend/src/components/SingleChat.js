@@ -10,6 +10,7 @@ import {FormControl, Spinner} from "@chakra-ui/react"
 import { sendMessage } from '../../../backend/controllers/messageControllers';
 import axios from "axios";
 import "./styles.css";
+import ScrollableChat from './ScrollableChat';
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
@@ -155,7 +156,9 @@ const typingHandler=(e)=>{
            margin="auto"
            /> 
            ):(
-           <div className='messages'>Messages</div>
+           <div className='messages'>
+            <ScrollableChat messages={messages}/>
+            </div>
            )}
 
            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
