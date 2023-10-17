@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { ChatState } from '../Context/ChatProvider';
 import {Box,Text} from "@chakra-ui/layout";
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -7,10 +7,13 @@ import {IconButton} from "@chakra-ui/button";
 import ProfileModal from "./Authentication/miscellaneous/ProfileModal";
 import UpdateGroupChatModal from './Authentication/miscellaneous/UpdateGroupChatModal';
 import {FormControl, Spinner} from "@chakra-ui/react"
-import { sendMessage } from '../../../backend/controllers/messageControllers';
+import { Input } from '@chakra-ui/input';
+// import { sendMessage } from '../../../backend/controllers/messageControllers';
 import axios from "axios";
 import "./styles.css";
 import ScrollableChat from './ScrollableChat';
+import { useToast } from '@chakra-ui/react';
+
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
 

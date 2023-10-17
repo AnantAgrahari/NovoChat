@@ -1,16 +1,24 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, MenuItem, MenuList, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@chakra-ui/modal';
 import React,{useState} from 'react';
 import {Box,Text} from "@chakra-ui/react";
 import { Button } from '@chakra-ui/react';
-import { Menu,MenuButton } from '@chakra-ui/react';
+import { Menu,MenuButton,MenuItem, MenuList,MenuDivider } from '@chakra-ui/menu';
 import {BellIcon,ChevronDownIcon} from "@chakra-ui/icons";
 import ProfileModal from './ProfileModal';
 import { useHistory } from 'react-router-dom';
 import { useDisclosure } from '@chakra-ui/hooks';
 import ChatLoading from '../../ChatLoading';
 import axios from 'axios';
+import { Tooltip } from '@chakra-ui/tooltip';
+import { Avatar } from '@chakra-ui/avatar';
+import { useToast } from '@chakra-ui/toast';
+import { Spinner } from '@chakra-ui/spinner';
+import { getSender } from '../../../config/ChatLogics';
+import UserListItem from '../../UserAvatar/UserListItem';
+import { ChatState } from '../../../Context/ChatProvider';
+import { Input } from '@chakra-ui/input';
 
-const sideDrawer = () => {
+const SideDrawer = () => {
   const [search,setSearch]=useState("");
   const [searchResult,setSearchResult]=useState([]);
   const [loading,setLoading]=useState(false);
@@ -170,6 +178,6 @@ const sideDrawer = () => {
   )
 }
 
-export default sideDrawer;
+export default SideDrawer;
 
 //tooltip icon shows text when u hover over a particular button or option//
